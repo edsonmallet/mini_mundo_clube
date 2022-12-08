@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Companies {
+  uuid          String    @id @default(uuid())
+  name          String
+  fancyName     String
+  corporateName String
+  document      String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+}
+
+model Users {
+  uuid            String    @id @default(uuid())
+  document        String    @unique
+  email           String    @unique
+  password        String
+  preRegisterDate DateTime  @default(now())
+  tokePreRegister String?
+  registerDate    DateTime?
+  tokenDiscount   String?
+  isActivated     Boolean   @default(false)
+  birthDate       DateTime?
+  parentUuid      String?
+  parents         Users?    @relation("UsersToUsers", fields: [parentUuid], references: [uuid])
+  childrens       Users[]   @relation("UsersToUsers")
+  walletUuid      String
+  wallets         wallets?  @relation(fields: [walletUuid], references: [uuid])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+}
+
+model wallets {
+  uuid         String      @id @default(uuid())
+  textContract String
+  version      String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
+  users        Users[]
+  beneficts    beneficts[]
+}
+
+model beneficts {
+  uuid        String    @id @default(uuid())
+  name        String
+  description String
+  value       Float
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  walletUuid  String
+  wallets     wallets?  @relation(fields: [walletUuid], references: [uuid])
+}
