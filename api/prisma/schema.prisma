@@ -19,6 +19,7 @@ model Companies {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
+  wallets       wallets[]
 }
 
 model Users {
@@ -49,6 +50,8 @@ model wallets {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   deletedAt    DateTime?
+  companyUuid  String
+  companies    Companies?  @relation(fields: [companyUuid], references: [uuid])
   users        Users[]
   beneficts    beneficts[]
 }

@@ -1,33 +1,33 @@
-import AppError from '@/shared/errors/app-error'
-import { ICreateCompanyDTO } from '../../dtos/icreate-company-dto'
-import { ICompany } from '../../infra/http/database/entities/company'
-import { ICompanyRepository } from '../../repositories/icompany-repository'
+import AppError from "@/shared/errors/app-error";
+import { ICreateCompanyDTO } from "../../dtos/icreate-company-dto";
+import { ICompany } from "../../infra/http/database/entities/company";
+import { ICompanyRepository } from "../../repositories/icompany-repository";
 
 interface IRequest {
-  company: ICreateCompanyDTO
+  company: ICreateCompanyDTO;
 }
 
-type Response = ICompany
+type Response = ICompany;
 
-export default class CreateUserUseCase {
+export default class CreateCompanyUseCase {
   constructor(private companyRepository: ICompanyRepository) {}
 
   public async execute({ company }: IRequest): Promise<Response> {
     if (!company) {
-      throw new AppError('Company is empty')
+      throw new AppError("Company is empty");
     }
 
     const existsCompany = await this.companyRepository.findCompanyByfield(
-      'name',
-      company.name as string
-    )
+      "document",
+      company.document as string
+    );
 
     if (existsCompany) {
-      throw new AppError('Company already exists')
+      throw new AppError("Company already exists");
     }
 
-    const createdCompany = await this.companyRepository.create(company)
+    const createdCompany = await this.companyRepository.create(company);
 
-    return { ...createdCompany }
+    return createdCompany;
   }
 }

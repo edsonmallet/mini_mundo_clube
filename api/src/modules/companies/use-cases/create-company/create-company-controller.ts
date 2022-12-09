@@ -1,29 +1,16 @@
-import { Request, Response } from 'express'
-import CompanyRepository from '../../infra/http/database/repositories/company-repository'
-import CreateUserUseCase from './create-company-usecase'
+import { Request, Response } from "express";
+import { ICreateCompanyDTO } from "../../dtos/icreate-company-dto";
+import CompanyRepository from "../../infra/http/database/repositories/company-repository";
+import CreateCompanyUseCase from "./create-company-usecase";
 
 export default class CreateCompanyController {
   public async handle(request: Request, response: Response): Promise<Response> {
-    const { name, fancyName, corporateName, responsibleUuid } = request.body
+    const company: ICreateCompanyDTO = request.body;
 
-    const responsible = {
-      master: responsibleUuid,
-      consultant: responsibleUuid || request.logged.userUuid,
-      admin: request.logged.userUuid
-    }
+    const companyRepository = new CompanyRepository();
+    const createCompanyUseCase = new CreateCompanyUseCase(companyRepository);
+    const createdCompany = await createCompanyUseCase.execute({ company });
 
-    const company = {
-      name,
-      fancyName,
-      corporateName,
-      responsibleUuid: responsible[request.logged.role],
-      creatorUuid: request.logged.userUuid
-    }
-
-    const companyRepository = new CompanyRepository()
-    const createCompany = new CreateUserUseCase(companyRepository)
-    const createdCompany = await createCompany.execute({ company })
-
-    return response.status(201).json({ ...createdCompany })
+    return response.status(201).json(createdCompany);
   }
 }

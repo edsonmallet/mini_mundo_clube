@@ -79,7 +79,21 @@ export default class CompanyRepository implements ICompanyRepository {
 
   public async create(data: ICreateCompanyDTO): Promise<ICompany> {
     const company = await dbCore.companies.create({
-      data,
+      data: {
+        name: data.name,
+        fancyName: data.fancyName,
+        corporateName: data.corporateName,
+        document: data.document,
+        wallets: {
+          create: {
+            textContract: data.wallets.textContract,
+            version: data.wallets.version,
+            beneficts: {
+              create: data.wallets.beneficts,
+            },
+          },
+        },
+      },
     });
 
     return company;
