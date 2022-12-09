@@ -14,7 +14,6 @@ Consiste em
 4. Entidade Users são os usuários que podem adquirir os beneficios, cada usuario pertence a uma empresa e está associado a uma carteira dessa empresa.
 5. Usuários podem ser associados a outros usuarios de acordo com o campo parentUuid preenchido.
 6. Usuários dependentes só podem se cadastrar após o cadastro do usuario principal.
-7. Usuários podem adquirir beneficios de acordo com a carteira que pertencem.
-8. Usuários podem adquirir beneficios de acordo com o wallet que pertencem.
-9. Usuários dependentes recebem o mesmo walletUuid do usuario principal.
-10. Usuários podem ser bloqueados, editas, removidos e desbloqueados apenas pela empresa contratante que pertence.
+7. Usuários podem adquirir beneficios de acordo com o wallet que pertencem.
+8. Usuários dependentes recebem o mesmo walletUuid do usuario principal.
+9. Usuários podem ser bloqueados, editas, removidos e desbloqueados apenas pela empresa contratante que pertence.
