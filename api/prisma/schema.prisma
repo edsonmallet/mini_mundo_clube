@@ -20,6 +20,7 @@ model Companies {
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
   wallets       wallets[]
+  users         Users[]
 }
 
 model Users {
@@ -27,6 +28,7 @@ model Users {
   document        String    @unique
   email           String    @unique
   password        String
+  name            String
   preRegisterDate DateTime  @default(now())
   tokePreRegister String?
   registerDate    DateTime?
@@ -38,6 +40,8 @@ model Users {
   childrens       Users[]   @relation("UsersToUsers")
   walletUuid      String
   wallets         wallets?  @relation(fields: [walletUuid], references: [uuid])
+  companyUuid     String
+  companies       Companies @relation(fields: [companyUuid], references: [uuid])
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   deletedAt       DateTime?

@@ -41,16 +41,6 @@ export default class CreateUserUseCase {
       }
     }
 
-    if (user.registry) {
-      const exists = await this.userRepository.findUserByField(
-        "registry",
-        user.registry
-      );
-      if (exists) {
-        throw new AppError("Matricula already exists");
-      }
-    }
-
     if (user.password) {
       user.password = await this.hashProvider.generateHash(
         user.password as string
@@ -59,6 +49,6 @@ export default class CreateUserUseCase {
 
     const createdUser = await this.userRepository.create(user);
 
-    return { ...createdUser };
+    return createdUser;
   }
 }
