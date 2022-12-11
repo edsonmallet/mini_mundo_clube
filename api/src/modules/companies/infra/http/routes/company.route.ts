@@ -8,8 +8,6 @@ import { Router } from "express";
 
 const companyRoutes = Router();
 
-companyRoutes.use(ensureAuthentication);
-
 const createCompanyController = new CreateCompanyController();
 const showCompanyController = new ShowCompanyController();
 const updateCompanyController = new UpdateCompanyController();
@@ -22,6 +20,20 @@ companyRoutes.post(
       name: Joi.string().required(),
       fancyName: Joi.string().required(),
       corporateName: Joi.string().required(),
+      document: Joi.string().required(),
+      wallets: Joi.array().items(
+        Joi.object().keys({
+          textContract: Joi.string().required(),
+          version: Joi.string().required(),
+          beneficts: Joi.array().items(
+            Joi.object().keys({
+              name: Joi.string().required(),
+              description: Joi.string().required(),
+              value: Joi.number().required(),
+            })
+          ),
+        })
+      ),
     }),
   }),
   createCompanyController.handle

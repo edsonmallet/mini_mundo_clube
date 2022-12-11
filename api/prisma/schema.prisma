@@ -35,6 +35,7 @@ model Users {
   tokenDiscount   String?
   isActivated     Boolean   @default(false)
   birthDate       DateTime?
+  isAdminCompany  Boolean   @default(false)
   parentUuid      String?
   parents         Users?    @relation("UsersToUsers", fields: [parentUuid], references: [uuid])
   childrens       Users[]   @relation("UsersToUsers")
@@ -48,26 +49,37 @@ model Users {
 }
 
 model wallets {
-  uuid         String      @id @default(uuid())
-  textContract String
-  version      String
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  deletedAt    DateTime?
-  companyUuid  String
-  companies    Companies?  @relation(fields: [companyUuid], references: [uuid])
-  users        Users[]
-  beneficts    beneficts[]
+  uuid             String             @id @default(uuid())
+  textContract     String
+  version          String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+  companyUuid      String
+  companies        Companies?         @relation(fields: [companyUuid], references: [uuid])
+  users            Users[]
+  walletsBeneficts walletsBeneficts[]
+}
+
+model walletsBeneficts {
+  uuid          String    @id @default(uuid())
+  walletUuid    String
+  wallets       wallets?  @relation(fields: [walletUuid], references: [uuid])
+  benefictsUuid String
+  beneficts     beneficts @relation(fields: [benefictsUuid], references: [uuid])
+  realDiscount  Float
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
 }
 
 model beneficts {
-  uuid        String    @id @default(uuid())
-  name        String
-  description String
-  value       Float
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-  walletUuid  String
-  wallets     wallets?  @relation(fields: [walletUuid], references: [uuid])
+  uuid             String             @id @default(uuid())
+  name             String
+  description      String
+  defaultDiscount  Float
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+  walletsBeneficts walletsBeneficts[]
 }

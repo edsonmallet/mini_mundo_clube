@@ -85,13 +85,17 @@ export default class CompanyRepository implements ICompanyRepository {
         corporateName: data.corporateName,
         document: data.document,
         wallets: {
-          create: {
-            textContract: data.wallets.textContract,
-            version: data.wallets.version,
+          create: data.wallets.map((wallet) => ({
+            textContract: wallet.textContract,
+            version: wallet.version,
             beneficts: {
-              create: data.wallets.beneficts,
+              create: wallet.beneficts.map((benefict) => ({
+                name: benefict.name,
+                description: benefict.description,
+                value: benefict.value,
+              })),
             },
-          },
+          })),
         },
       },
     });
