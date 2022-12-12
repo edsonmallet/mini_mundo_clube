@@ -13,6 +13,7 @@ export default class CreateUserController {
       userRepository,
       hashProvider
     );
+
     const createdUser = await createUserUseCase.execute({ user });
 
     return response.status(201).json(createdUser);

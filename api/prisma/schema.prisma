@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
 }
 
 datasource db {
@@ -27,14 +28,14 @@ model users {
   uuid            String    @id @default(uuid())
   document        String    @unique
   email           String    @unique
-  password        String
+  password        String?
   name            String
   preRegisterDate DateTime  @default(now())
   tokePreRegister String?
   registerDate    DateTime?
   tokenDiscount   String?
   isActivated     Boolean   @default(false)
-  birthDate       DateTime?
+  birthDate       DateTime
   isAdminCompany  Boolean   @default(false)
   parentUuid      String?
   parents         users?    @relation("UsersToUsers", fields: [parentUuid], references: [uuid])

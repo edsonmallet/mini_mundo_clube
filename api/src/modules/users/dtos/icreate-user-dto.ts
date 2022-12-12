@@ -1,3 +1,3 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from "@prisma/client";
 
-export interface ICreateUserDTO extends Prisma.UsersUncheckedCreateInput {}
+export interface ICreateUserDTO extends Prisma.usersUncheckedCreateInput {}
