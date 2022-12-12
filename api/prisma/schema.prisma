@@ -6,11 +6,11 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Companies {
+model companies {
   uuid          String    @id @default(uuid())
   name          String
   fancyName     String
@@ -20,10 +20,10 @@ model Companies {
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
   wallets       wallets[]
-  users         Users[]
+  users         users[]
 }
 
-model Users {
+model users {
   uuid            String    @id @default(uuid())
   document        String    @unique
   email           String    @unique
@@ -37,12 +37,12 @@ model Users {
   birthDate       DateTime?
   isAdminCompany  Boolean   @default(false)
   parentUuid      String?
-  parents         Users?    @relation("UsersToUsers", fields: [parentUuid], references: [uuid])
-  childrens       Users[]   @relation("UsersToUsers")
+  parents         users?    @relation("UsersToUsers", fields: [parentUuid], references: [uuid])
+  childrens       users[]   @relation("UsersToUsers")
   walletUuid      String
   wallets         wallets?  @relation(fields: [walletUuid], references: [uuid])
   companyUuid     String
-  companies       Companies @relation(fields: [companyUuid], references: [uuid])
+  companies       companies @relation(fields: [companyUuid], references: [uuid])
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   deletedAt       DateTime?
@@ -56,8 +56,8 @@ model wallets {
   updatedAt        DateTime           @updatedAt
   deletedAt        DateTime?
   companyUuid      String
-  companies        Companies?         @relation(fields: [companyUuid], references: [uuid])
-  users            Users[]
+  companies        companies?         @relation(fields: [companyUuid], references: [uuid])
+  users            users[]
   walletsBeneficts walletsBeneficts[]
 }
 
@@ -76,6 +76,7 @@ model walletsBeneficts {
 model beneficts {
   uuid             String             @id @default(uuid())
   name             String
+  slug             String             @unique
   description      String
   defaultDiscount  Float
   createdAt        DateTime           @default(now())
