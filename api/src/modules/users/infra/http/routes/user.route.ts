@@ -26,7 +26,7 @@ userRoutes.get(
   "/",
   celebrate({
     [Segments.BODY]: Joi.object().keys({
-      document: Joi.string().uuid(),
+      document: Joi.string(),
       birthDate: Joi.string(),
     }),
   }),

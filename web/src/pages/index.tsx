@@ -27,7 +27,6 @@ export default function Home() {
       </Head>
 
       <Flex
-        height="100vh"
         width="full"
         alignItems={"center"}
         justifyContent={"center"}
